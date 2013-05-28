@@ -61,10 +61,12 @@ def analyze_repo(repo, summaries):
     pulls = get(repo["pulls_url"].replace("{/number}", ""), payload)
 
     for pull in pulls:
+        likes, comments = count_comment_likes(pull)
         summary = {}
         summary['name']       = pull["title"]
         summary['url']        = pull["html_url"]
-        summary['likes']      = count_comment_likes(pull)
+        summary['likes']      = likes
+        summary['comments']   = comments
         summary['repo_name']  = repo["name"]
         summary['repo_url']   = repo["html_url"]
         summaries[categorize_pull(summary)].append(summary)
@@ -76,7 +78,7 @@ def count_comment_likes(pull):
     for comment in comments:
         if re.search("(\+ *1)", comment["body"]):
             likes += 1
-    return likes
+    return likes, len(comments)
 
 def categorize_pull(pull):
     likes = pull['likes']
