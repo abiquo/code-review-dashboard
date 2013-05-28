@@ -1,11 +1,12 @@
 from flask import request, Response, Flask, render_template
+import os
 import re
 import requests
 
 app = Flask("pulls")
 
 # Set your github token see https://github.com/blog/1509-personal-api-tokens
-github_token = ""
+github_token = os.environ['ABQ_REVIEW_TOKEN']
 
 # The repos to track
 repos = ["https://api.github.com/repos/abiquo/aim",
