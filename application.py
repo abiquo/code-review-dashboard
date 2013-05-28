@@ -1,7 +1,10 @@
 from flask import request, Response, Flask, render_template
 import os
+import Queue
 import re
 import requests
+import threading
+import timeit
 
 app = Flask("pulls")
 
@@ -52,27 +55,52 @@ repos = ["https://api.github.com/repos/abiquo/aim",
 @app.route("/")
 def index():
     summaries = { 'hot' : [] , 'cold' : [] , 'burned' : []}
+    threads = []
+    results = Queue.Queue()
+    start = timeit.default_timer()
+    
     for repo_url in repos:
-        analyze_repo(get(repo_url), summaries)
-    return render_template('index.html', pulls = summaries)
+        repo = get(repo_url)
+        t = threading.Thread(target=analyze_repo, args=(repo, results,))
+        t.start()
+        threads.append(t)
+    
+    [thread.join() for thread in threads]
 
-def analyze_repo(repo, summaries):
+    while not results.empty():
+        summary = results.get()
+        summaries[categorize_pull(summary)].append(summary)
+
+    end = timeit.default_timer()
+    
+    return render_template('index.html', pulls = summaries, process_time = (end-start))
+
+def analyze_repo(repo, results):
     payload = {"state" : "open"}
     pulls = get(repo["pulls_url"].replace("{/number}", ""), payload)
+    threads = []
 
     for pull_head in pulls:
-        pull = get(pull_head["url"])
-        likes, comments = count_comment_likes(pull)
-        summary = {}
-        summary['name']       = pull["title"]
-        summary['url']        = pull["html_url"]
-        summary['likes']      = likes
-        summary['comments']   = comments
-        summary['repo_name']  = repo["name"]
-        summary['repo_url']   = repo["html_url"]
-        summary['author']     = pull["user"]["login"]
-        summaries[categorize_pull(summary)].append(summary)
+        t = threading.Thread(target=analyze_pull, args=(repo, pull_head, results,))
+        t.start()
+        threads.append(t)
+
+    [thread.join() for thread in threads]
+
     return pulls
+
+def analyze_pull(repo, pull_head, results):
+    pull = get(pull_head["url"])
+    likes, comments = count_comment_likes(pull)
+    summary = {}
+    summary['name']       = pull["title"]
+    summary['url']        = pull["html_url"]
+    summary['likes']      = likes
+    summary['comments']   = comments
+    summary['repo_name']  = repo["name"]
+    summary['repo_url']   = repo["html_url"]
+    summary['author']     = pull["user"]["login"]
+    results.put(summary)
 
 def count_comment_likes(pull):
     comments = get(pull["comments_url"])
