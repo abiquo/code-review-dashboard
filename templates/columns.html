@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% import "pulls.html" as pull_utils %}
+
+{% block content %}
+    <div class="sixteen columns">
+        <hr />
+    </div>
+    <div class="one-third column">
+        {{ pull_utils.render("Cold", pulls['cold'], old_days) }}
+    </div>
+    <div class="one-third column">
+        {{ pull_utils.render("Hot!", pulls['hot'], old_days) }}
+    </div>
+    <div class="one-third column">
+        {{ pull_utils.render("Burned", pulls['burned'], old_days) }}
+    </div>
+{% endblock %}
