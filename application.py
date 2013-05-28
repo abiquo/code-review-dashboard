@@ -12,7 +12,7 @@ import timeit
 old_days = 2
 
 # Set your github token see https://github.com/blog/1509-personal-api-tokens
-github_token = os.environ['ABQ_REVIEW_TOKEN']
+github_token = os.environ['GITHUB_TOKEN']
 
 # The repos to track
 repos = ["https://api.github.com/repos/abiquo/aim",
@@ -55,12 +55,12 @@ repos = ["https://api.github.com/repos/abiquo/aim",
          "https://api.github.com/repos/abiquo/commons-test",
          "https://api.github.com/repos/abiquo/ui"]
 
-app = Flask("pulls")
+app = Flask(__name__)
 
 
 @app.route("/")
 def index():
-    summaries = {'hot': [], 'cold': [], 'burned': []}
+    summaries = {'hot': [], 'cold': [], 'burning': []}
     threads = []
     results = Queue.Queue()
     start = timeit.default_timer()
@@ -129,7 +129,7 @@ def count_comment_likes(pull):
 def categorize_pull(pull):
     likes = pull['likes']
     if likes >= 2:
-        return 'burned'
+        return 'burning'
     elif likes > 0:
         return 'hot'
     return 'cold'
