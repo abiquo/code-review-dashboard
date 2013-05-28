@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import datetime
 import os
 import Queue
 import re
@@ -6,7 +7,9 @@ import requests
 import threading
 import timeit
 
-app = Flask("pulls")
+
+# Number of days to consider a pull request 'old'
+old_days = 2
 
 # Set your github token see https://github.com/blog/1509-personal-api-tokens
 github_token = os.environ['ABQ_REVIEW_TOKEN']
@@ -52,6 +55,8 @@ repos = ["https://api.github.com/repos/abiquo/aim",
          "https://api.github.com/repos/abiquo/commons-test",
          "https://api.github.com/repos/abiquo/ui"]
 
+app = Flask("pulls")
+
 
 @app.route("/")
 def index():
@@ -74,8 +79,10 @@ def index():
 
     end = timeit.default_timer()
 
-    return render_template('index.html',
-                           pulls=summaries, process_time=(end-start))
+    return render_template('columns.html',
+                           pulls=summaries,
+                           process_time=(end-start),
+                           old_days=old_days)
 
 
 def analyze_repo(repo, results):
@@ -105,6 +112,7 @@ def analyze_pull(repo, pull_head, results):
     summary['repo_name'] = repo["name"]
     summary['repo_url'] = repo["html_url"]
     summary['author'] = pull["user"]["login"]
+    summary['old'] = get_days_old(pull)
     results.put(summary)
 
 
@@ -125,6 +133,13 @@ def categorize_pull(pull):
     elif likes > 0:
         return 'hot'
     return 'cold'
+
+
+def get_days_old(pull):
+    last_updated = pull['updated_at']
+    dt = datetime.datetime.strptime(last_updated, '%Y-%m-%dT%H:%M:%SZ')
+    today = datetime.datetime.today()
+    return (today - dt).days
 
 
 def get(url, params=None):
