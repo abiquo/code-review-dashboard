@@ -7,7 +7,7 @@
 
 <head>
     {% block title %}
-    <title>Abiquo's pulls :: Generated in {{ "%.2f" % process_time }} seconds</title>
+        <title>Abiquo Code Review Dashboard</title>
     {% endblock %}
     
     <meta charset="utf-8">
@@ -31,8 +31,23 @@
 
 <body>
     <div class="container">
-        {% block content %}
+        <div class="sixteen columns">
+            {% block header %}
+            {% endblock %}
+            <hr />
+        </div>
+
+        {% block columns %}
         {% endblock %}
+
+        <div class="sixteen columns" style="text-align: center; color: gray;">
+            <hr />
+            {% block footer %}
+                <span style="text-align: center; color: gray;">
+                    Generated in {{ "%.2f" % process_time }} seconds
+                </span>
+            {% endblock %}
+        </div>
     </div>
 </body>
 </html>

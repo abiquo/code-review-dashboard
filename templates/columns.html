@@ -2,10 +2,7 @@
 
 {% import "pulls.html" as pull_utils %}
 
-{% block content %}
-    <div class="sixteen columns">
-        <hr />
-    </div>
+{% block columns %}
     <div class="one-third column">
         {{ pull_utils.render("Cold", pulls['cold'], old_days) }}
     </div>
