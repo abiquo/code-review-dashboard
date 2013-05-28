@@ -48,8 +48,9 @@
 			<h3>Cold</h3>
                         {% for pull in pulls['cold'] %}
                         <p>
-                            <a href="{{ pull['url'] }}">{{ pull['name'] }}</a><br/>
-                            {{ pull['likes'] }} likes
+                        <strong>{{ pull['repo_name'] }}</strong>
+                        <a href="{{ pull['url'] }}">{{ pull['name'] }}</a> <em>({{ pull['author'] }})</em><br/>
+                            {{ pull['likes'] }} likes / {{ pull['comments'] }} comments
                         </p>
                         {% endfor %}
 		</div>
@@ -57,8 +58,9 @@
 			<h3>Hot!</h3>
                         {% for pull in pulls['hot'] %}
                         <p>
-                            <a href="{{ pull['url'] }}">{{ pull['name'] }}</a><br/>
-                            {{ pull['likes'] }} likes
+                        <strong>{{ pull['repo_name'] }}</strong>
+                        <a href="{{ pull['url'] }}">{{ pull['name'] }}</a> <em>({{ pull['author'] }})</em><br/>
+                            {{ pull['likes'] }} likes / {{ pull['comments'] }} comments
                         </p>
                         {% endfor %}
 
@@ -67,8 +69,9 @@
 			<h3>Burned</h3>
                         {% for pull in pulls['burned'] %}
                         <p>
-                            <a href="{{ pull['url'] }}">{{ pull['name'] }}</a><br/>
-                            {{ pull['likes'] }} likes
+                        <strong>{{ pull['repo_name'] }}</strong>
+                        <a href="{{ pull['url'] }}">{{ pull['name'] }}</a> <em>({{ pull['author'] }})</em><br/>
+                            {{ pull['likes'] }} likes / {{ pull['comments'] }} comments
                         </p>
                         {% endfor %}
 		</div>
