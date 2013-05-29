@@ -23,12 +23,6 @@ it into a virtualenv should be the same, once it has been activated:
     curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
     sudo python get-pip.py
 
-Configuration
--------------
-
-Before using it, you will need to create a [Github Api Token](https://github.com/blog/1509-personal-api-tokens)
-and configure it in the `GITHUB_TOKEN` environment variable.
-
 Running
 -------
 
@@ -39,12 +33,11 @@ Once you have the token configured you can run the dashboard as follows:
 Deploying to Heroku
 -------------------
 
-The application can also be deployed to Heroku. To deploy it you just have to create the application, configure
-the Github Api Token and deploy it as follows:
+The application can also be deployed to Heroku. To deploy it you just have to create the application
+and deploy it as follows:
 
     # Create and configure the Heroku application
     heroku create <application name>
-    heroku config:set GITHUB_TOKEN=<github api token>
 
     # Deploy the application
     git push heroku master
