@@ -9,6 +9,7 @@ class Github:
     def __init__(self, repos, credentials):
         self.repos = repos
         self.credentials = credentials
+        self.total_threads = 0
         self.total_requests = 0
         self.remaining_rl = 5000
 
@@ -24,6 +25,7 @@ class Github:
             threads.append(t)
 
         [thread.join() for thread in threads]
+        self.__incr_threads(len(threads))
 
         pulls = []
         while not results.empty():
@@ -31,6 +33,7 @@ class Github:
 
         return {
             "pulls": pulls,
+            "total-threads": self.total_threads,
             "total-requests": self.total_requests,
             "rate-limit": self.remaining_rl
         }
@@ -47,6 +50,7 @@ class Github:
             threads.append(t)
 
         [thread.join() for thread in threads]
+        self.__incr_threads(len(threads))
 
         return pulls
 
@@ -85,7 +89,7 @@ class Github:
                                 headers={"Authorization": auth},
                                 params=params)
 
-        self.__update_requests()
+        self.__incr_requests()
         self.__update_rl(response)
 
         response.raise_for_status()
@@ -94,7 +98,7 @@ class Github:
             json.extend(self.get(response.links['next']["url"]))
         return json
 
-    def __update_requests(self):
+    def __incr_requests(self):
         rlock = threading.RLock()
         with rlock:
             self.total_requests += 1
@@ -105,3 +109,8 @@ class Github:
             new_rl = int(response.headers['X-RateLimit-Remaining'])
             if new_rl < self.remaining_rl:
                 self.remaining_rl = new_rl
+
+    def __incr_threads(self, num_threads):
+        rlock = threading.RLock()
+        with rlock:
+            self.total_threads += num_threads

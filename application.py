@@ -21,6 +21,7 @@ def index(auth=None):
 
     return render_template('columns.html',
                            pulls=summaries,
+                           total_threads=result['total-threads'],
                            total_requests=result['total-requests'],
                            rate_limit=result['rate-limit'],
                            process_time=(end-start),

@@ -1,5 +1,11 @@
-.footer {
-    text-align: center;
+.footer-left {
+    text-align: left;
+    color: gray;
+    margin-bottom: 5px;
+}
+
+.footer-right {
+    text-align: right;
     color: gray;
     margin-bottom: 5px;
 }

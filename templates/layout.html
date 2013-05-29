@@ -47,12 +47,20 @@
         {% block columns %}
         {% endblock %}
 
-        <div class="sixteen columns footer">
+        <div class="sixteen columns">
             <hr />
-            {% block footer %}
-                Performed {{ total_requests }} Github API calls in {{ "%.2f" % process_time }} seconds<br/>
-                {{ rate_limit }} remaining calls
-            {% endblock %}
+        </div>
+
+        {% block footer %}
+            <div class="eight columns footer-left">
+                Github API calls: {{ total_requests }}<br/>
+                Remaining rate-limit: {{ rate_limit }}
+            </div>
+            <div class="eight columns footer-right">
+                Loading time: {{ "%.2f" % process_time }} seconds<br/>
+                Spawned threads: {{total_threads }}<br/>
+            </div>
+        {% endblock %}
         </div>
     </div>
 </body>
