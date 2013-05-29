@@ -26,7 +26,7 @@ it into a virtualenv should be the same, once it has been activated:
 Running
 -------
 
-Once you have the token configured you can run the dashboard as follows:
+Once you have installed the requirements you can run the dashboard as follows:
 
     python application.py
 
