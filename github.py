@@ -9,6 +9,8 @@ class Github:
     def __init__(self, repos, credentials):
         self.repos = repos
         self.credentials = credentials
+        self.total_requests = 0
+        self.remaining_rl = 5000
 
     def search_pulls(self):
         threads = []
@@ -27,7 +29,11 @@ class Github:
         while not results.empty():
             pulls.append(results.get())
 
-        return pulls
+        return {
+            "pulls": pulls,
+            "total-requests": self.total_requests,
+            "rate-limit": self.remaining_rl
+        }
 
     def _analyze_repo(self, repo, results):
         payload = {"state": "open"}
@@ -78,8 +84,24 @@ class Github:
         response = requests.get(url,
                                 headers={"Authorization": auth},
                                 params=params)
+
+        self.__update_requests()
+        self.__update_rl(response)
+
         response.raise_for_status()
         json = response.json()
         if "next" in response.links:
             json.extend(self.get(response.links['next']["url"]))
         return json
+
+    def __update_requests(self):
+        rlock = threading.RLock()
+        with rlock:
+            self.total_requests += 1
+
+    def __update_rl(self, response):
+        rlock = threading.RLock()
+        with rlock:
+            new_rl = int(response.headers['X-RateLimit-Remaining'])
+            if new_rl < self.remaining_rl:
+                self.remaining_rl = new_rl

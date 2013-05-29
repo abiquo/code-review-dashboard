@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/skeleton.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/abiquo.css') }}">
 
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -30,6 +31,12 @@
 </head>
 
 <body>
+    <a href="https://github.com/abiquo/code-review-dashboard">
+        <img style="position: absolute; top: 0; right: 0; border: 0;"
+            src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+            alt="Fork me on GitHub">
+    </a>
+
     <div class="container">
         <div class="sixteen columns">
             {% block header %}
@@ -40,12 +47,11 @@
         {% block columns %}
         {% endblock %}
 
-        <div class="sixteen columns" style="text-align: center; color: gray;">
+        <div class="sixteen columns footer">
             <hr />
             {% block footer %}
-                <span style="text-align: center; color: gray;">
-                    Generated in {{ "%.2f" % process_time }} seconds
-                </span>
+                Performed {{ total_requests }} Github API calls in {{ "%.2f" % process_time }} seconds<br/>
+                {{ rate_limit }} remaining calls
             {% endblock %}
         </div>
     </div>

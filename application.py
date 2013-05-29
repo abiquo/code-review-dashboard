@@ -14,13 +14,15 @@ def index(auth=None):
     summaries = {'hot': [], 'cold': [], 'burning': []}
 
     start = timeit.default_timer()
-    pulls = github.search_pulls()
+    result = github.search_pulls()
     end = timeit.default_timer()
 
-    [summaries[categorize_pull(pull)].append(pull) for pull in pulls]
+    [summaries[categorize_pull(pull)].append(pull) for pull in result['pulls']]
 
     return render_template('columns.html',
                            pulls=summaries,
+                           total_requests=result['total-requests'],
+                           rate_limit=result['rate-limit'],
                            process_time=(end-start),
                            old_days=config.OLD_DAYS)
 

@@ -1,7 +1,7 @@
 {% macro render(label, pulls, old_days) -%}
     <h3>{{ label }}</h3>
     {% for pull in pulls %}
-        <p {% if pull['old'] %} style="font-color: red" {% endif %}>
+        <p>
         <strong>{{ pull['repo_name'] }}</strong>
         <a href="{{ pull['url'] }}">{{ pull['name'] }}</a> <em>({{ pull['author'] }})</em><br/>
         {% if pull['old'] >= old_days %}<span style="color: red">{% endif %}
