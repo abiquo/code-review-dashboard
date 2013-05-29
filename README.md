@@ -3,7 +3,7 @@ Code review dashboard
 
 A dashboard to see the status of all opened pull requests.
 
-* **Cold** pull requests are the one where no one has given a +1.
+* **Cold** pull requests are the ones where no one has given a +1.
 * **Hot!** ones are those that are waiting for the last +1 to be merged.
 * **Burning** pull requests are those that are ready to be merged.
 
