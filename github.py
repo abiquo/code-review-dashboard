@@ -11,7 +11,7 @@ class Github:
         self.credentials = credentials
         self.total_threads = 0
         self.total_requests = 0
-        self.remaining_rl = 5000
+        self.remaining_rl = None
 
     def search_pulls(self):
         threads = []
@@ -104,11 +104,13 @@ class Github:
             self.total_requests += 1
 
     def __update_rl(self, response):
-        rlock = threading.RLock()
-        with rlock:
-            new_rl = int(response.headers['X-RateLimit-Remaining'])
-            if new_rl < self.remaining_rl:
-                self.remaining_rl = new_rl
+        rate_remaining = response.headers['X-RateLimit-Remaining']
+        if rate_remaining is not None:
+            new_rl = int(rate_remaining)
+            rlock = threading.RLock()
+            with rlock:
+                if self.remaining_rl is None or new_rl < self.remaining_rl:
+                    self.remaining_rl = new_rl
 
     def __incr_threads(self, num_threads):
         rlock = threading.RLock()

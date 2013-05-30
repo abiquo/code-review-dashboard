@@ -27,6 +27,11 @@ it into a virtualenv should be the same, once it has been activated:
     curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
     sudo python get-pip.py
 
+Configuration
+-------------
+
+The dashboard is configured in the `config.py` file. Feel free to edit and adapt it to your needs.
+
 Running
 -------
 
