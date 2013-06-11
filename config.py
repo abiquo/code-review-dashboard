@@ -4,6 +4,9 @@ LISTEN_ADDRESS = '0.0.0.0'
 # Number of days to consider a pull request 'old'
 OLD_DAYS = 2
 
+# The patterns in comments that are considered an OK
+OK_PATTERNS = ["\+1", ":shoe:\s*:soccer:"]
+
 # The repos to track
 REPOS = ["https://api.github.com/repos/abiquo/aim",
          "https://api.github.com/repos/abiquo/heartbeat",

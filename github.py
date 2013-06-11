@@ -1,3 +1,4 @@
+import config
 import datetime
 import Queue
 import re
@@ -73,7 +74,7 @@ class Github:
         likes = 0
         total_comments = pull["comments"] + pull["review_comments"]
         for comment in comments:
-            if re.search("(\+ *1)", comment["body"]):
+            if self.__has_like(comment):
                 likes += 1
         return likes, total_comments
 
@@ -116,3 +117,9 @@ class Github:
         rlock = threading.RLock()
         with rlock:
             self.total_threads += num_threads
+
+    def __has_like(self, comment):
+        for pattern in config.OK_PATTERNS:
+            if re.search(pattern, comment["body"]):
+                return True
+        return False
