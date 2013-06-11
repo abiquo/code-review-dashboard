@@ -25,7 +25,8 @@ class Github:
             t.start()
             threads.append(t)
 
-        [thread.join() for thread in threads]
+        for thread in threads:
+            thread.join()
         self.__incr_threads(len(threads))
 
         pulls = []
@@ -50,7 +51,8 @@ class Github:
             t.start()
             threads.append(t)
 
-        [thread.join() for thread in threads]
+        for thread in threads:
+            thread.join()
         self.__incr_threads(len(threads))
 
         return pulls

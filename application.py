@@ -17,7 +17,8 @@ def index(auth=None):
     result = github.search_pulls()
     end = timeit.default_timer()
 
-    [summaries[categorize_pull(pull)].append(pull) for pull in result['pulls']]
+    for pull in result['pulls']:
+        summaries[categorize_pull(pull)].append(pull)
 
     return render_template('columns.html',
                            pulls=summaries,
