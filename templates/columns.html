@@ -4,12 +4,12 @@
 
 {% block columns %}
     <div class="one-third column">
-        {{ pull_utils.render("Cold", pulls['cold'], old_days) }}
+        {{ pull_utils.render("Cold", pulls['cold'], old_days, login) }}
     </div>
     <div class="one-third column">
-        {{ pull_utils.render("Hot!", pulls['hot'], old_days) }}
+        {{ pull_utils.render("Hot!", pulls['hot'], old_days, login) }}
     </div>
     <div class="one-third column">
-        {{ pull_utils.render("Burning", pulls['burning'], old_days) }}
+        {{ pull_utils.render("Burning", pulls['burning'], old_days, login) }}
     </div>
 {% endblock %}
