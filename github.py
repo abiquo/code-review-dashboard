@@ -14,6 +14,9 @@ class Github:
         self.total_requests = 0
         self.remaining_rl = None
 
+    def user(self):
+        return self.credentials.user
+
     def search_pulls(self):
         threads = []
         results = Queue.Queue()
