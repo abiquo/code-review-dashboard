@@ -14,6 +14,7 @@ def index(auth=None):
     summaries = {'hot': [], 'cold': [], 'burning': []}
 
     start = timeit.default_timer()
+    author = github.user()
     result = github.search_pulls()
     end = timeit.default_timer()
 
@@ -25,8 +26,9 @@ def index(auth=None):
                            total_threads=result['total-threads'],
                            total_requests=result['total-requests'],
                            rate_limit=result['rate-limit'],
-                           process_time=(end-start),
-                           old_days=config.OLD_DAYS)
+                           process_time=(end - start),
+                           old_days=config.OLD_DAYS,
+                           login=author)
 
 
 def categorize_pull(pull):
