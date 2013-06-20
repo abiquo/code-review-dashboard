@@ -47,4 +47,5 @@ REPOS = ["https://api.github.com/repos/abiquo/aim",
          "https://api.github.com/repos/abiquo/m",
          "https://api.github.com/repos/abiquo/commons-test",
          "https://api.github.com/repos/abiquo/ui",
+         "https://api.github.com/repos/abiquo/code-review-dashboard",
          "https://api.github.com/repos/abiquo/platform"]
