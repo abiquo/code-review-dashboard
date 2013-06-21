@@ -3,7 +3,7 @@
     {% for pull in pulls %}
         <p>
         <strong>{{ pull['repo_name'] }}</strong>
-        <a href="{{ pull['url'] }}">{{ pull['name'] }}</a><em{% if pull['author'] == login %} class="me"{% endif %}>({{ pull['author'] }})</em><br/>
+        <a href="{{ pull['url'] }}">{{ pull['name'] }}</a> <em{% if pull['author'] == login %} class="me"{% endif %}>({{ pull['author'] }})</em><br/>
         {% if pull['old'] >= old_days %}<span style="color: red">{% endif %}
             {{ pull['likes'] }} likes / {{ pull['comments'] }} comments / {{ pull['old'] }} days old
         {% if pull['old'] >= old_days %}</span>{% endif %}
