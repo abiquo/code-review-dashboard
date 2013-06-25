@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route("/")
 @requires_auth
 def index(auth=None):
-    github = Github(config.REPOS, auth)
+    github = Github(auth)
     summaries = {'hot': [], 'cold': [], 'burning': []}
 
     start = timeit.default_timer()
@@ -22,6 +22,7 @@ def index(auth=None):
         summaries[categorize_pull(pull)].append(pull)
 
     return render_template('columns.html',
+                           title=config.TITLE,
                            pulls=summaries,
                            total_threads=result['total-threads'],
                            total_requests=result['total-requests'],
