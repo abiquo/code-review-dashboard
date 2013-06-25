@@ -7,12 +7,17 @@ import threading
 
 
 class Github:
-    def __init__(self, repos, credentials):
-        self.repos = repos
+    def __init__(self, credentials):
         self.credentials = credentials
         self.total_threads = 0
         self.total_requests = 0
         self.remaining_rl = None
+        if config.ORG is not None:
+            self.repos = self.list_org_repos(config.ORG)
+        elif config.USER is not None:
+            self.repos = self.list_user_repos(config.USER)
+        else:
+            self.repos = config.REPOS
 
     def user(self):
         return self.credentials.user
@@ -42,6 +47,14 @@ class Github:
             "total-requests": self.total_requests,
             "rate-limit": self.remaining_rl
         }
+
+    def list_org_repos(self, org):
+        url = 'https://api.github.com/orgs/%s/repos' % org
+        return [repo['url'] for repo in self.get(url)]
+
+    def list_user_repos(self, user):
+        url = 'https://api.github.com/users/%s/repos' % user
+        return [repo['url'] for repo in self.get(url)]
 
     def _analyze_repo(self, repo, results):
         payload = {"state": "open"}
