@@ -7,7 +7,7 @@
 
 <head>
     {% block title %}
-        <title>Abiquo Code Review Dashboard</title>
+    <title>{{ title }}</title>
     {% endblock %}
     
     <meta charset="utf-8">
@@ -58,7 +58,7 @@
             </div>
             <div class="eight columns footer-right">
                 Loading time: {{ "%.2f" % process_time }} seconds<br/>
-                Spawned threads: {{total_threads }}<br/>
+                Spawned threads: {{ total_threads }}<br/>
             </div>
         {% endblock %}
     </div>

@@ -4,10 +4,18 @@ LISTEN_ADDRESS = '0.0.0.0'
 # Number of days to consider a pull request 'old'
 OLD_DAYS = 2
 
+# The title to display
+TITLE = 'Abiquo Code Review Dashboard'
+
 # The patterns in comments that are considered an OK
 OK_PATTERNS = ["\+1", ":shoe:\s*:soccer:"]
 
 # The repos to track
+# ORG = 'abiquo'   # Use this to watch all repos of the organization
+# USER = 'nacx'    # Use this to watch all repos of the user
+# REPOS = [<repo api-url list>]       # Use this to watch a fixed repo list
+ORG = None
+USER = None
 REPOS = ["https://api.github.com/repos/abiquo/aim",
          "https://api.github.com/repos/abiquo/heartbeat",
          "https://api.github.com/repos/abiquo/tarantino",
