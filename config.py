@@ -8,7 +8,7 @@ OLD_DAYS = 2
 TITLE = 'Abiquo Code Review Dashboard'
 
 # The patterns in comments that are considered an OK
-OK_PATTERNS = ["\+1", ":shoe:\s*:soccer:"]
+OK_PATTERNS = ["\+1", ":shoe:\s*:soccer:", ":shipit:"]
 
 # The repos to track
 # ORG = 'abiquo'   # Use this to watch all repos of the organization
