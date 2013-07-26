@@ -4,6 +4,7 @@ import Queue
 import re
 import requests
 import threading
+import time
 
 
 class Github:
@@ -28,14 +29,16 @@ class Github:
 
         for repo_url in self.repos:
             repo = self.get(repo_url)
-            t = threading.Thread(target=self._analyze_repo,
-                                 args=(repo, results,))
-            t.start()
-            threads.append(t)
-
-        for thread in threads:
-            thread.join()
-        self.__incr_threads(len(threads))
+            if config.THREADED:
+                t = threading.Thread(target=self._analyze_repo,
+                                     args=(repo, results,))
+                t.start()
+                threads.append(t)
+                for thread in threads:
+                    thread.join()
+                self.__incr_threads(len(threads))
+            else:
+                self._analyze_repo(repo, results)
 
         pulls = []
         while not results.empty():
@@ -62,14 +65,16 @@ class Github:
         threads = []
 
         for pull_head in pulls:
-            t = threading.Thread(target=self._analyze_pull,
-                                 args=(repo, pull_head, results,))
-            t.start()
-            threads.append(t)
-
-        for thread in threads:
-            thread.join()
-        self.__incr_threads(len(threads))
+            if config.THREADED:
+                t = threading.Thread(target=self._analyze_pull,
+                                     args=(repo, pull_head, results,))
+                t.start()
+                threads.append(t)
+                for thread in threads:
+                    thread.join()
+                self.__incr_threads(len(threads))
+            else:
+                self._analyze_pull(repo, pull_head, results)
 
         return pulls
 
@@ -102,20 +107,32 @@ class Github:
         today = datetime.datetime.today()
         return (today - dt).days
 
-    def get(self, url, params=None):
+    def get(self, url, params=None, delay=config.DELAY,
+            retries=config.MAX_RETRIES, backoff=config.BACKOFF):
+        if config.DEBUG:
+            print "GET %s" % url
+
         auth = "Basic %s" % self.credentials.encoded()
-        response = requests.get(url,
-                                headers={"Authorization": auth},
-                                params=params)
 
-        self.__incr_requests()
-        self.__update_rl(response)
+        while retries > 1:
+            response = requests.get(url,
+                                    headers={"Authorization": auth},
+                                    params=params)
+            self.__incr_requests()
+            self.__update_rl(response)
 
-        response.raise_for_status()
-        json = response.json()
-        if "next" in response.links:
-            json.extend(self.get(response.links['next']["url"]))
-        return json
+            if response.status_code != requests.codes.ok:
+                if config.DEBUG:
+                    print "Request failed. Retrying in %s seconds" % delay
+                time.sleep(delay)
+                return self.get(url, params, delay*backoff, retries-1, backoff)
+            else:
+                json = response.json()
+                if "next" in response.links:
+                    json.extend(self.get(response.links['next']["url"]))
+                return json
+
+        raise Exception("Request failed after %s retries" % config.MAX_RETRIES)
 
     def __incr_requests(self):
         rlock = threading.RLock()
