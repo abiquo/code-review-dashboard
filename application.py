@@ -29,7 +29,10 @@ def index(auth=None):
                            rate_limit=result['rate-limit'],
                            process_time=(end - start),
                            old_days=config.OLD_DAYS,
-                           login=author)
+                           login=author,
+                           total_cold=len(summaries['cold']),
+                           total_hot=len(summaries['hot']),
+                           total_burning=len(summaries['burning']))
 
 
 def categorize_pull(pull):

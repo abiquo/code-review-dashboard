@@ -80,12 +80,13 @@ class Github:
 
     def _analyze_pull(self, repo, pull_head, results):
         pull = self.get(pull_head["url"])
-        likes, comments = self._count_comment_likes(pull)
+        likes, comments, following = self._count_comment_likes(pull)
         summary = {}
         summary['name'] = pull["title"]
         summary['url'] = pull["html_url"]
         summary['likes'] = likes
         summary['comments'] = comments
+        summary['following'] = following
         summary['repo_name'] = repo["name"]
         summary['repo_url'] = repo["html_url"]
         summary['author'] = pull["user"]["login"]
@@ -95,11 +96,14 @@ class Github:
     def _count_comment_likes(self, pull):
         comments = self.get(pull["comments_url"])
         likes = 0
+        following = False
         total_comments = pull["comments"] + pull["review_comments"]
         for comment in comments:
+            if comment["user"]["login"] == self.user():
+                following = True
             if self.__has_like(comment):
                 likes += 1
-        return likes, total_comments
+        return likes, total_comments, following
 
     def _get_days_old(self, pull):
         last_updated = pull['updated_at']
