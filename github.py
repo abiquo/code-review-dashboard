@@ -91,6 +91,7 @@ class Github:
         summary['repo_url'] = repo["html_url"]
         summary['author'] = pull["user"]["login"]
         summary['old'] = self._get_days_old(pull)
+        summary['obsolete'] = summary['old'] >= config.OLD_DAYS
         results.put(summary)
 
     def _count_comment_likes(self, pull):

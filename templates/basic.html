@@ -1,0 +1,11 @@
+{% macro render(pull, user) -%}
+    <strong>{{ pull['repo_name'] }}</strong>
+    <a href="{{ pull['url'] }}">{{ pull['name'] }}</a> <em{% if pull['author'] == user %} class="me"{% endif %}>({{ pull['author'] }})</em><br/>
+    {{ pull['likes'] }} likes /
+    {% if pull['following'] %}<span class="participated">{% endif %}
+        {{ pull['comments'] }} comments
+    {% if pull['following'] %}</span>{% endif %} / 
+    {% if pull['obsolete'] %}<span class="obsolete">{% endif %}
+        {{ pull['old'] }} days old
+    {% if pull['obsolete'] %}</span>{% endif %}
+{%- endmacro %}

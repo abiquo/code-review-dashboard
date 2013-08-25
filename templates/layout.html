@@ -7,7 +7,7 @@
 
 <head>
     {% block title %}
-    <title>{{ title }}</title>
+    <title>{{ view['title'] }}</title>
     {% endblock %}
     
     <meta charset="utf-8">
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/skeleton.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/layout.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/abiquo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/basic.css') }}">
 
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -53,12 +53,12 @@
 
         {% block footer %}
             <div class="eight columns footer-left">
-                Github API calls: {{ total_requests }}<br/>
-                Remaining rate-limit: {{ rate_limit }}
+                Github API calls: {{ stats['requests'] }}<br/>
+                Remaining rate-limit: {{ stats['rate-limit'] }}
             </div>
             <div class="eight columns footer-right">
-                Loading time: {{ "%.2f" % process_time }} seconds<br/>
-                Spawned threads: {{ total_threads }}<br/>
+                Loading time: {{ "%.2f" % stats['process-time'] }} seconds<br/>
+                Spawned threads: {{ stats['threads'] }}<br/>
             </div>
         {% endblock %}
     </div>

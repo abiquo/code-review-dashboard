@@ -11,37 +11,47 @@ app = Flask(__name__)
 @requires_auth
 def index(auth=None):
     github = Github(auth)
-    summaries = {'hot': [], 'cold': [], 'burning': []}
+    user = github.user()
 
     start = timeit.default_timer()
-    author = github.user()
     result = github.search_pulls()
     end = timeit.default_timer()
 
+    summaries = {'left': [], 'middle': [], 'right': []}
     for pull in result['pulls']:
         summaries[categorize_pull(pull)].append(pull)
 
+    stats = {
+        'threads': result['total-threads'],
+        'requests': result['total-requests'],
+        'rate-limit': result['rate-limit'],
+        'process-time': end - start,
+        'total-left': len(summaries['left']),
+        'total-middle': len(summaries['middle']),
+        'total-right': len(summaries['right'])
+    }
+
+    view = {
+        'title': config.TITLE,
+        'headers': config.HEADERS,
+        'template': config.TEMPLATE,
+    }
+
     return render_template('columns.html',
-                           title=config.TITLE,
+                           view=view,
+                           stats=stats,
                            pulls=summaries,
-                           total_threads=result['total-threads'],
-                           total_requests=result['total-requests'],
-                           rate_limit=result['rate-limit'],
-                           process_time=(end - start),
                            old_days=config.OLD_DAYS,
-                           login=author,
-                           total_cold=len(summaries['cold']),
-                           total_hot=len(summaries['hot']),
-                           total_burning=len(summaries['burning']))
+                           user=user)
 
 
 def categorize_pull(pull):
     likes = pull['likes']
     if likes >= 2:
-        return 'burning'
+        return 'right'
     elif likes > 0:
-        return 'hot'
-    return 'cold'
+        return 'middle'
+    return 'left'
 
 
 if __name__ == "__main__":

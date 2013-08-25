@@ -14,3 +14,15 @@
     color: #4863A0;
     font-weight: bold;
 }
+
+.count {
+    color: gray;
+}
+
+.obsolete {
+    color: red;
+}
+
+.participated {
+    color: green;
+}

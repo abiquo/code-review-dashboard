@@ -4,6 +4,10 @@
 
 LISTEN_ADDRESS = '0.0.0.0'                  # Address where the application listens
 TITLE = 'Abiquo Code Review Dashboard'      # The title to display
+HEADERS = { 'left': 'Cold',                 # The title for each columns
+            'middle': 'Hot!',
+            'right': 'Burning'}
+TEMPLATE = 'basic.html'                     # The template to render
 OLD_DAYS = 2                                # Number of days to consider a pull request 'old'
 OK_PATTERNS = ["\+1", ":shoe:\s*:soccer:"]  # The patterns that are considered an OK
 
