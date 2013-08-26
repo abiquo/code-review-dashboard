@@ -1,22 +1,22 @@
 {% extends "layout.html" %}
 
-{% import view['template'] as renderer %}
+{% import template as renderer %}
 
 {% block columns %}
     <div class="one-third column">
-        <h3>{{ view['headers']['left'] }} <span class="count">({{ stats['total-left'] }})</span></h3>
+        <h3>{{ headers['left'] }} <span class="count">({{ stats['total-left'] }})</span></h3>
         {% for pull in pulls['left'] %}
             <p>{{ renderer.render(pull, user) }}</p>
         {% endfor %}
     </div>
     <div class="one-third column">
-        <h3>{{ view['headers']['middle'] }} <span class="count">({{ stats['total-middle'] }})</span></h3>
+        <h3>{{ headers['middle'] }} <span class="count">({{ stats['total-middle'] }})</span></h3>
         {% for pull in pulls['middle'] %}
             <p>{{ renderer.render(pull, user) }}</p>
         {% endfor %}
     </div>
     <div class="one-third column">
-        <h3>{{ view['headers']['right'] }} <span class="count">({{ stats['total-right'] }})</span></h3>
+        <h3>{{ headers['right'] }} <span class="count">({{ stats['total-right'] }})</span></h3>
         {% for pull in pulls['right'] %}
             <p>{{ renderer.render(pull, user) }}</p>
         {% endfor %}

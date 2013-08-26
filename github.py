@@ -8,26 +8,30 @@ import time
 
 
 class Github:
-    def __init__(self, credentials):
+    def __init__(self, credentials, plugin):
         self.credentials = credentials
         self.total_threads = 0
         self.total_requests = 0
         self.remaining_rl = None
-        if config.ORG is not None:
-            self.repos = self.list_org_repos(config.ORG)
-        elif config.USER is not None:
-            self.repos = self.list_user_repos(config.USER)
-        else:
-            self.repos = config.REPOS
+        self.plugin = plugin
+        self.plugin.github = self
 
     def user(self):
         return self.credentials.user
+    
+    def list_org_repos(self, org):
+        url = 'https://api.github.com/orgs/%s/repos' % org
+        return [repo['url'] for repo in self.get(url)]
+
+    def list_user_repos(self, user):
+        url = 'https://api.github.com/users/%s/repos' % user
+        return [repo['url'] for repo in self.get(url)]
 
     def search_pulls(self):
         threads = []
         results = Queue.Queue()
 
-        for repo_url in self.repos:
+        for repo_url in self.plugin.repos:
             repo = self.get(repo_url)
             if config.THREADED:
                 t = threading.Thread(target=self._analyze_repo,
@@ -51,14 +55,6 @@ class Github:
             "rate-limit": self.remaining_rl
         }
 
-    def list_org_repos(self, org):
-        url = 'https://api.github.com/orgs/%s/repos' % org
-        return [repo['url'] for repo in self.get(url)]
-
-    def list_user_repos(self, user):
-        url = 'https://api.github.com/users/%s/repos' % user
-        return [repo['url'] for repo in self.get(url)]
-
     def _analyze_repo(self, repo, results):
         payload = {"state": "open"}
         pulls = self.get(repo["pulls_url"].replace("{/number}", ""), payload)
@@ -80,33 +76,32 @@ class Github:
 
     def _analyze_pull(self, repo, pull_head, results):
         pull = self.get(pull_head["url"])
-        likes, comments, following = self._count_comment_likes(pull)
         summary = {}
         summary['name'] = pull["title"]
         summary['url'] = pull["html_url"]
-        summary['likes'] = likes
-        summary['comments'] = comments
-        summary['following'] = following
         summary['repo_name'] = repo["name"]
         summary['repo_url'] = repo["html_url"]
         summary['author'] = pull["user"]["login"]
-        summary['old'] = self._get_days_old(pull)
-        summary['obsolete'] = summary['old'] >= config.OLD_DAYS
+        summary['old'] = self.get_days_old(pull)
+        
+        self.plugin.parse_pull(pull, summary)
+        self._analyze_comments(pull, summary)
+        
         results.put(summary)
 
-    def _count_comment_likes(self, pull):
-        comments = self.get(pull["comments_url"])
-        likes = 0
+    def _analyze_comments(self, pull, summary):
         following = False
-        total_comments = pull["comments"] + pull["review_comments"]
+        comments = self.get(pull["comments_url"])
+        
         for comment in comments:
             if comment["user"]["login"] == self.user():
                 following = True
-            if self.__has_like(comment):
-                likes += 1
-        return likes, total_comments, following
+            self.plugin.parse_comment(comment, summary)
+        
+        summary['comments'] = pull["comments"] + pull["review_comments"]
+        summary['following'] = following
 
-    def _get_days_old(self, pull):
+    def get_days_old(self, pull):
         last_updated = pull['updated_at']
         dt = datetime.datetime.strptime(last_updated, '%Y-%m-%dT%H:%M:%SZ')
         today = datetime.datetime.today()
@@ -157,9 +152,3 @@ class Github:
         rlock = threading.RLock()
         with rlock:
             self.total_threads += num_threads
-
-    def __has_like(self, comment):
-        for pattern in config.OK_PATTERNS:
-            if re.search(pattern, comment["body"]):
-                return True
-        return False

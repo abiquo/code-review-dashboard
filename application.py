@@ -7,11 +7,20 @@ import timeit
 app = Flask(__name__)
 
 
+def load_plugin(name):
+    module = __import__("plugins." + name, fromlist=["plugins"])
+    plugin = module.load()
+    plugin_config = plugin.config
+    for prop in plugin_config.iterkeys():
+        setattr(config, prop, plugin_config[prop])
+    return plugin, plugin_config
+
+
 @app.route("/")
 @requires_auth
 def index(auth=None):
-    github = Github(auth)
-    user = github.user()
+    plugin, plugin_config = load_plugin(config.PLUGIN)
+    github = Github(auth, plugin)
 
     start = timeit.default_timer()
     result = github.search_pulls()
@@ -19,7 +28,7 @@ def index(auth=None):
 
     summaries = {'left': [], 'middle': [], 'right': []}
     for pull in result['pulls']:
-        summaries[categorize_pull(pull)].append(pull)
+        summaries[plugin.classify(pull)].append(pull)
 
     stats = {
         'threads': result['total-threads'],
@@ -31,27 +40,13 @@ def index(auth=None):
         'total-right': len(summaries['right'])
     }
 
-    view = {
-        'title': config.TITLE,
-        'headers': config.HEADERS,
-        'template': config.TEMPLATE,
-    }
-
     return render_template('columns.html',
-                           view=view,
+                           title=plugin_config['title'],
+                           headers=plugin_config['headers'],
+                           template=plugin_config['template'],
                            stats=stats,
                            pulls=summaries,
-                           old_days=config.OLD_DAYS,
-                           user=user)
-
-
-def categorize_pull(pull):
-    likes = pull['likes']
-    if likes >= 2:
-        return 'right'
-    elif likes > 0:
-        return 'middle'
-    return 'left'
+                           user=github.user())
 
 
 if __name__ == "__main__":
