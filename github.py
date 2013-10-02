@@ -1,7 +1,6 @@
 import config
 import datetime
 import Queue
-import re
 import requests
 import threading
 import time
@@ -18,7 +17,7 @@ class Github:
 
     def user(self):
         return self.credentials.user
-    
+
     def list_org_repos(self, org):
         url = 'https://api.github.com/orgs/%s/repos' % org
         return [repo['url'] for repo in self.get(url)]
@@ -83,21 +82,22 @@ class Github:
         summary['repo_url'] = repo["html_url"]
         summary['author'] = pull["user"]["login"]
         summary['old'] = self.get_days_old(pull)
-        
+        summary['target_branch'] = pull["base"]["ref"]
+
         self.plugin.parse_pull(pull, summary)
         self._analyze_comments(pull, summary)
-        
+
         results.put(summary)
 
     def _analyze_comments(self, pull, summary):
         following = False
         comments = self.get(pull["comments_url"])
-        
+
         for comment in comments:
             if comment["user"]["login"] == self.user():
                 following = True
             self.plugin.parse_comment(comment, summary)
-        
+
         summary['comments'] = pull["comments"] + pull["review_comments"]
         summary['following'] = following
 
@@ -125,7 +125,8 @@ class Github:
                 if config.DEBUG:
                     print "Request failed. Retrying in %s seconds" % delay
                 time.sleep(delay)
-                return self.get(url, params, delay*backoff, retries-1, backoff)
+                return self.get(url, params, delay * backoff,
+                                retries - 1, backoff)
             else:
                 json = response.json()
                 if "next" in response.links:

@@ -1,6 +1,6 @@
 {% macro render(pull, user) -%}
     <strong>{{ pull['repo_name'] }}</strong>
-    <a href="{{ pull['url'] }}">{{ pull['name'] }}</a> <em{% if pull['author'] == user %} class="me"{% endif %}>({{ pull['author'] }})</em><br/>
+    [{{ pull['target_branch'] }}] <a href="{{ pull['url'] }}">{{ pull['name'] }}</a> <em{% if pull['author'] == user %} class="me"{% endif %}>({{ pull['author'] }})</em><br/>
     {{ pull['likes'] }} likes /
     {% if pull['following'] %}<span class="participated">{% endif %}
         {{ pull['comments'] }} comments
