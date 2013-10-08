@@ -27,8 +27,14 @@ def index(auth=None):
     end = timeit.default_timer()
 
     summaries = {'left': [], 'middle': [], 'right': []}
+    authors = set()
+    branches = set()
+    repos = set()
     for pull in result['pulls']:
         summaries[plugin.classify(pull)].append(pull)
+        authors.add(pull['author'])
+        branches.add(pull['target_branch'])
+        repos.add(pull['repo_name'])
 
     stats = {
         'threads': result['total-threads'],
@@ -46,8 +52,10 @@ def index(auth=None):
                            template=plugin_config['template'],
                            stats=stats,
                            pulls=summaries,
+                           authors=sorted(authors),
+                           branches=sorted(branches),
+                           repos=sorted(repos),
                            user=github.user())
-
 
 if __name__ == "__main__":
     app.debug = True
