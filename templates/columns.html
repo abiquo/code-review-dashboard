@@ -8,40 +8,71 @@
     <script type="text/javascript">
         var no_apply = "-";
 
+        function hide_all_pulls()
+        {
+            $(".pull").hide();
+        }
+
+        function show_all_pulls()
+        {
+            $(".pull").show();
+        }
+
+        function show_pulls_with(classes)
+        {
+            hide_all_pulls();
+            $(".pull" + classes).show();
+        }
+
         function class_to_filter(value)
         {
-            var clazz = value.replace(".", "\\.");
-            if (value != no_apply) {
-                return "." + clazz;
+            if (value == null) {
+                return "";
             }
-            return ""
+
+            if (!value) {
+                return "";
+            }
+
+            if (value == no_apply) {
+                return "";
+            }
+
+            return "." + value.replace(".", "\\.");
         }
 
         function show_mine(username)
         {
-            $(author_list).val(username);
-            $(branch_list).val(no_apply);
-            $(repo_list).val(no_apply);
-            filter_columns();
+            reset_filters();
+            show_pulls_with(class_to_filter(username));
         }
 
         function remove_all_filters()
         {
+            reset_filters();
+            show_all_pulls();
+        }
+
+        function reset_filters()
+        {
             $(author_list).val(no_apply);
             $(branch_list).val(no_apply);
             $(repo_list).val(no_apply);
-            filter_columns();
         }
 
         function filter_columns()
         {
-            var classes = ".pull";
+            var classes = ""
             classes += class_to_filter($(author_list).val());
             classes += class_to_filter($(branch_list).val());
             classes += class_to_filter($(repo_list).val());
-            console.log(classes);
-            $("p").not(classes).hide();
-            $(classes).show();
+            
+            if (classes) {
+                show_pulls_with(classes);
+            }       
+            else {
+                show_all_pulls();
+            }
         }
     </script>
 
