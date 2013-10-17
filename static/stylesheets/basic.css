@@ -26,3 +26,21 @@
 .participated {
     color: green;
 }
+
+#filters {
+    float: top;
+    display: none;
+    width: 100%;
+}
+
+#filters-toggle {
+    text-align: center;
+}
+
+#dropdown {
+    cursor: pointer;
+}
+
+.right {
+    text-align: right;
+}

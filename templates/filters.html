@@ -1,0 +1,116 @@
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script type="text/javascript">
+    var no_apply = "-";
+    var rotation = 180;
+
+    $(document).ready(function() {
+        $('#dropdown').click(function() {
+            $('#dropdown').css({
+                '-webkit-transform': 'rotate(' + rotation + 'deg)',
+                '-moz-transform': 'rotate(' + rotation + 'deg)',
+                '-ms-transform': 'rotate(' + rotation + 'deg)',
+                '-o-transform': 'rotate(' + rotation + 'deg)',
+                'transform': 'rotate(' + rotation + 'deg)'
+            });
+            $("#filters").animate({height: 'toggle'}, 200);
+            $("#filterbuttons").animate({height: 'toggle'}, 100);
+            rotation = (rotation == 180)? 0 : 180;
+        });
+    });
+
+    function hide_all_pulls() {
+        $(".pull").hide();
+    }
+
+    function show_all_pulls() {
+        $(".pull").show();
+    }
+
+    function show_pulls_with(classes) {
+        hide_all_pulls();
+        $(".pull" + classes).show();
+    }
+
+    function class_to_filter(value) {
+        if (value == null) {
+            return "";
+        }
+        if (!value) {
+            return "";
+        }
+        if (value == no_apply) {
+            return "";
+        }
+        return "." + value.replace(".", "\\.");
+    }
+
+    function show_mine(username) {
+        reset_filters();
+        show_pulls_with(class_to_filter(username));
+    }
+
+    function remove_all_filters() {
+        reset_filters();
+        show_all_pulls();
+    }
+
+    function reset_filters() {
+        $(author_list).val(no_apply);
+        $(branch_list).val(no_apply);
+        $(repo_list).val(no_apply);
+    }
+
+    function filter_columns() {
+        var classes = ""
+        classes += class_to_filter($(author_list).val());
+        classes += class_to_filter($(branch_list).val());
+        classes += class_to_filter($(repo_list).val());
+            
+        if (classes) {
+            show_pulls_with(classes);
+        } else {
+            show_all_pulls();
+        }
+    }
+</script>
+<div id="filters">
+    <div class="one-third column">
+        <!-- filter by author -->
+        <label for="author_list">Author</label>
+        <select id="author_list" onchange="filter_columns();">
+            <option value="-">-</option>
+            {% for author in authors %}
+                <option value="{{ author }}">{{ author }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="one-third column">
+        <!-- filter by repository -->
+        <label for="repo_list">Repository</label>
+        <select id="repo_list" onchange="filter_columns();">
+            <option value="-">-</option>
+            {% for repo in repos %}
+                <option value="{{ repo }}">{{ repo }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="one-third column">
+        <!-- filter by target branch -->
+        <label for="branch_list">Target branch</label>
+        <select id="branch_list" onchange="filter_columns();">
+            <option value="-">-</option>
+            {% for branch in branches %}
+                <option value="{{ branch }}">{{ branch }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="eight columns right">
+        <a class="button" onclick="show_mine('{{ user }}');">Show only my pulls</a>
+    </div>
+    <div class="eight columns">
+        <a class="button" onclick="remove_all_filters();">Remove all filters</a>
+    </div>
+</div>
+<div id="filters-toggle" class="sixteen columns">
+    <img id="dropdown" src="{{ url_for('static', filename='images/dropdown.png') }}" title="Show/Hide filters" />
+</div>

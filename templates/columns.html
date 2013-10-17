@@ -2,126 +2,24 @@
 
 {% import template as renderer %}
 
+{% block header %}
+    {% include 'filters.html' %}
+{% endblock %}
+
 {% block columns %}
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-
-    <script type="text/javascript">
-        var no_apply = "-";
-
-        function hide_all_pulls()
-        {
-            $(".pull").hide();
-        }
-
-        function show_all_pulls()
-        {
-            $(".pull").show();
-        }
-
-        function show_pulls_with(classes)
-        {
-            hide_all_pulls();
-            $(".pull" + classes).show();
-        }
-
-        function class_to_filter(value)
-        {
-            if (value == null) {
-                return "";
-            }
-
-            if (!value) {
-                return "";
-            }
-
-            if (value == no_apply) {
-                return "";
-            }
-
-            return "." + value.replace(".", "\\.");
-        }
-
-        function show_mine(username)
-        {
-            reset_filters();
-            show_pulls_with(class_to_filter(username));
-        }
-
-        function remove_all_filters()
-        {
-            reset_filters();
-            show_all_pulls();
-        }
-
-        function reset_filters()
-        {
-            $(author_list).val(no_apply);
-            $(branch_list).val(no_apply);
-            $(repo_list).val(no_apply);
-        }
-
-        function filter_columns()
-        {
-            var classes = ""
-            classes += class_to_filter($(author_list).val());
-            classes += class_to_filter($(branch_list).val());
-            classes += class_to_filter($(repo_list).val());
-            
-            if (classes) {
-                show_pulls_with(classes);
-            }       
-            else {
-                show_all_pulls();
-            }
-        }
-    </script>
-
-    <div class="four columns">
-        <h3>Filters</h3>
-        
-        <!-- filter by author -->
-        <label for="author_list">Author</label>
-        <select id="author_list" onchange="filter_columns();">
-            <option value="-">-</option>
-            {% for author in authors %}
-                <option value="{{ author }}">{{ author }}</option>
-            {% endfor %}
-        </select>
-
-        <!-- filter by repository -->
-        <label for="repo_list">Repository</label>
-        <select id="repo_list" onchange="filter_columns();">
-            <option value="-">-</option>
-            {% for repo in repos %}
-                <option value="{{ repo }}">{{ repo }}</option>
-            {% endfor %}
-        </select>
-        
-        <!-- filter by target branch -->
-        <label for="branch_list">Target branch</label>
-        <select id="branch_list" onchange="filter_columns();">
-            <option value="-">-</option>
-            {% for branch in branches %}
-                <option value="{{ branch }}">{{ branch }}</option>
-            {% endfor %}
-        </select>
-
-        <a class="full-width button" onclick="show_mine('{{ user }}');">Show only my pulls</a>
-        <a class="full-width button" onclick="remove_all_filters();">Remove all filters</a>
-    </div>
-    <div class="four columns">
+    <div class="one-third column">
         <h3>{{ headers['left'] }} <span class="count">({{ stats['total-left'] }})</span></h3>
         {% for pull in pulls['left'] %}
             <p class="pull {{ pull['target_branch'] }} {{ pull['author'] }} {{ pull['repo_name'] }}">{{ renderer.render(pull, user) }}</p>
         {% endfor %}
     </div>
-    <div class="four columns">
+    <div class="one-third column">
         <h3>{{ headers['middle'] }} <span class="count">({{ stats['total-middle'] }})</span></h3>
         {% for pull in pulls['middle'] %}
             <p class="pull {{ pull['target_branch'] }} {{ pull['author'] }} {{ pull['repo_name'] }}">{{ renderer.render(pull, user) }}</p>
         {% endfor %}
     </div>
-    <div class="four columns">
+    <div class="one-third column">
         <h3>{{ headers['right'] }} <span class="count">({{ stats['total-right'] }})</span></h3>
         {% for pull in pulls['right'] %}
             <p class="pull {{ pull['target_branch'] }} {{ pull['author'] }} {{ pull['repo_name'] }}">{{ renderer.render(pull, user) }}</p>
