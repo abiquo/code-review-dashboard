@@ -41,7 +41,7 @@
         if (value == no_apply) {
             return "";
         }
-        return "." + value.replace(".", "\\.");
+        return "." + value.replace(/\./g, "\\.");
     }
 
     function show_mine(username) {
