@@ -3,6 +3,7 @@
 #################
 
 LISTEN_ADDRESS = '0.0.0.0'      # Address where the application listens
+LISTEN_PORT = 80              # Port where the application listens
 PLUGIN = 'abiquo'               # The plugin to load
 DEBUG = True                    # Print debut information
 THREADED = True                 # Use multiple threads to perform the Github API calls

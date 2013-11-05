@@ -59,4 +59,4 @@ def index(auth=None):
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host=config.LISTEN_ADDRESS)
+    app.run(host=config.LISTEN_ADDRESS, port=config.LISTEN_PORT)
