@@ -76,4 +76,5 @@ class Abiquo:
                 "https://api.github.com/repos/abiquo/commons-test",
                 "https://api.github.com/repos/abiquo/ui",
                 "https://api.github.com/repos/abiquo/code-review-dashboard",
+                "https://api.github.com/repos/abiquo/cloud-provider-proxy",
                 "https://api.github.com/repos/abiquo/platform"]
