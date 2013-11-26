@@ -9,7 +9,7 @@ class Abiquo:
     def __init__(self):
         self.config = {
             'title': 'Abiquo Code Review Dashboard',
-            'headers': { 'left': 'Cold', 'middle': 'Hot!', 'right': 'Burning'},
+            'headers': {'left': 'Cold', 'middle': 'Hot!', 'right': 'Burning'},
             'template': 'abiquo.html',
         }
         self.repos = self._abiquo_repos()
@@ -17,7 +17,7 @@ class Abiquo:
     def parse_pull(self, pull, data):
         data['obsolete'] = data['old'] >= 2
         data['likes'] = 0
-    
+
     def parse_comment(self, comment, data):
         if self._has_like(comment):
             data['likes'] = data['likes'] + 1
@@ -77,4 +77,6 @@ class Abiquo:
                 "https://api.github.com/repos/abiquo/ui",
                 "https://api.github.com/repos/abiquo/code-review-dashboard",
                 "https://api.github.com/repos/abiquo/cloud-provider-proxy",
+                "https://api.github.com/repos/abiquo/nfs-plugin",
+                "https://api.github.com/repos/abiquo/omapi-dhcp",
                 "https://api.github.com/repos/abiquo/platform"]
