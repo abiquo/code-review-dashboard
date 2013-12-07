@@ -17,10 +17,13 @@ class Abiquo:
     def parse_pull(self, pull, data):
         data['obsolete'] = data['old'] >= 2
         data['likes'] = 0
+        data['dislikes'] = 0
 
     def parse_comment(self, comment, data):
         if self._has_like(comment):
             data['likes'] = data['likes'] + 1
+        if self._has_dislike(comment):
+            data['dislikes'] = data['dislikes'] + 1
 
     def classify(self, pull):
         likes = pull['likes']
@@ -34,6 +37,11 @@ class Abiquo:
         for pattern in ["\+1", ":shoe:\s*:soccer:"]:
             if re.search(pattern, comment["body"]):
                 return True
+        return False
+
+    def _has_dislike(self, comment):
+        if re.search("\-1", comment["body"]):
+            return True
         return False
 
     def _abiquo_repos(self):
