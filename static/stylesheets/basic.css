@@ -23,6 +23,11 @@
     color: red;
 }
 
+.dislike {
+    font-weight: bold;
+    color: orange;
+}
+
 .participated {
     color: green;
 }
