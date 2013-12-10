@@ -25,7 +25,7 @@
 
 .dislike {
     font-weight: bold;
-    text-shadow: 0px 0px 1px yellow, 0px 2px 5px red;
+    color: orange;
 }
 
 .participated {
