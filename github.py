@@ -16,7 +16,14 @@ class Github:
         self.plugin.github = self
 
     def user(self):
+        if not self.credentials.user:
+            self.__request_user()
         return self.credentials.user
+
+    def name(self):
+        if not self.credentials.name:
+            self.__request_user()
+        return self.credentials.name
 
     def list_org_repos(self, org):
         url = 'https://api.github.com/orgs/%s/repos' % org
@@ -112,11 +119,13 @@ class Github:
         if config.DEBUG:
             print "GET %s" % url
 
-        auth = "Basic %s" % self.credentials.encoded()
+        if not params:
+            params = {'access_token': self.credentials.token}
+        else:
+            params['access_token'] = self.credentials.token
 
         while retries > 1:
             response = requests.get(url,
-                                    headers={"Authorization": auth},
                                     params=params)
             self.__incr_requests()
             self.__update_rl(response)
@@ -153,3 +162,9 @@ class Github:
         rlock = threading.RLock()
         with rlock:
             self.total_threads += num_threads
+
+    def __request_user(self):
+        url = 'https://api.github.com/user'
+        r = self.get(url)
+        self.credentials.user = r['login']
+        self.credentials.name = r['name']
