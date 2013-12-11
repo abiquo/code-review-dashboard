@@ -37,7 +37,9 @@
             alt="Fork me on GitHub">
     </a>
 
-    <a href="logout"><p style="position: absolute; top: 1em; right: 17em; text-decoration: underline">Logout</p></a>
+    {% block logout %}
+        <a href="logout"><p style="position: absolute; top: 1em; right: 17em; text-decoration: underline">Logout</p></a>
+    {% endblock %}
 
     <div class="container">
         {% block header %}

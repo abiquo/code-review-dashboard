@@ -26,7 +26,7 @@ def load_plugin(name):
 @requires_auth
 def index(auth=None):
     if not auth:
-        return app.send_static_file('html/github-btn.html')
+        return render_template('signin.html')
 
     plugin, plugin_config = load_plugin(config.PLUGIN)
     github = Github(auth, plugin)

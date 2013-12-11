@@ -49,3 +49,12 @@
 .right {
     text-align: right;
 }
+
+.signin {
+    text-align: center;
+}
+
+#octocat {
+    width: 266px;
+    height: 221px;
+}
