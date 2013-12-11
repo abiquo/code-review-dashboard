@@ -13,7 +13,10 @@
             <img id="octocat" src="{{ url_for('static', filename='images/octocat.jpg') }}" title="Sign in with Github" />
             <br/><br/>
             <button type="submit" id="login" name="login">Sign in with Github</button><br>
-            <input type="checkbox" id="scope" name="scope" value="private">Include private repositories (requires write access)
+            <label for="scope">
+                <input type="checkbox" id="scope" name="scope" value="private">
+                <span>Allow access to private repositories (includes write permissions)</span>
+            </label>
         </form>
     </div>
 {% endblock %}
