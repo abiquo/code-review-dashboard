@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block logout %}
+{% endblock %}
+
+{% block header %}
+    <div class="signin sixteen columns">
+        <h2>Authentication required</h2>
+        <br />
+    </div>
+{% endblock %}
+
+{% block columns %}
+    <div class="signin sixteen columns">
+        <form id="sigin_form" action="login" method="get">
+            <img id="octocat" src="{{ url_for('static', filename='images/octocat.jpg') }}" title="Sign in with Github" />
+            <br/><br/>
+            <button type="submit" id="login" name="login">Sign in with Github</button><br>
+            <input type="checkbox" id="scope" name="scope" value="private">Include private repositories (requires write access)
+        </form>
+    </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

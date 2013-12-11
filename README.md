@@ -53,3 +53,9 @@ and deploy it as follows:
     # Deploy the application
     git push heroku master
 
+    # Set application ID and secret as heroku envs
+    heroku config:set CLIENT_ID=ID
+    heroku config:set CLIENT_SECRET=secret
+
+    # Set a flask application secret key
+    heroku config:set SECRET_KEY=secret-key
