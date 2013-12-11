@@ -10,6 +10,12 @@
     margin-bottom: 5px;
 }
 
+.footer-center {
+    text-align: center;
+    color: gray;
+    margin-bottom: 5px;
+}
+
 .me {
     color: #4863A0;
     font-weight: bold;
@@ -24,7 +30,6 @@
 }
 
 .dislike {
-    font-weight: bold;
     color: orange;
 }
 

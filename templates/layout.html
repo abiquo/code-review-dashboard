@@ -37,10 +37,6 @@
             alt="Fork me on GitHub">
     </a>
 
-    {% block logout %}
-        <a href="logout"><p style="position: absolute; top: 1em; right: 17em; text-decoration: underline">Logout</p></a>
-    {% endblock %}
-
     <div class="container">
         {% block header %}
             <div class="sixteen columns">
@@ -63,6 +59,9 @@
             <div class="eight columns footer-right">
                 Loading time: {{ "%.2f" % stats['process-time'] }} seconds<br/>
                 Spawned threads: {{ stats['threads'] }}<br/>
+            </div>
+            <div class="sixteen columns footer-center">
+                <a class="button" href="logout">Logout</a>
             </div>
         {% endblock %}
     </div>
