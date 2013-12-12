@@ -38,17 +38,21 @@ class Github:
         results = Queue.Queue()
 
         for repo_url in self.plugin.repos:
-            repo = self.get(repo_url)
-            if config.THREADED:
-                t = threading.Thread(target=self._analyze_repo,
-                                     args=(repo, results,))
-                t.start()
-                threads.append(t)
-                for thread in threads:
-                    thread.join()
-                self.__incr_threads(len(threads))
-            else:
-                self._analyze_repo(repo, results)
+            try:
+                repo = self.get(repo_url)
+                if config.THREADED:
+                    t = threading.Thread(target=self._analyze_repo,
+                                         args=(repo, results,))
+                    t.start()
+                    threads.append(t)
+                    for thread in threads:
+                        thread.join()
+                    self.__incr_threads(len(threads))
+                else:
+                    self._analyze_repo(repo, results)
+            except:
+                if config.DEBUG:
+                    print "Could not analyze repository: %s" % repo_url
 
         pulls = []
         while not results.empty():
@@ -67,16 +71,20 @@ class Github:
         threads = []
 
         for pull_head in pulls:
-            if config.THREADED:
-                t = threading.Thread(target=self._analyze_pull,
-                                     args=(repo, pull_head, results,))
-                t.start()
-                threads.append(t)
-                for thread in threads:
-                    thread.join()
-                self.__incr_threads(len(threads))
-            else:
-                self._analyze_pull(repo, pull_head, results)
+            try:
+                if config.THREADED:
+                    t = threading.Thread(target=self._analyze_pull,
+                                         args=(repo, pull_head, results,))
+                    t.start()
+                    threads.append(t)
+                    for thread in threads:
+                        thread.join()
+                    self.__incr_threads(len(threads))
+                else:
+                    self._analyze_pull(repo, pull_head, results)
+            except:
+                if config.DEBUG:
+                    print "Could not analyze pull request: %s" % pull_head["url"]
 
         return pulls
 
@@ -130,7 +138,14 @@ class Github:
             self.__incr_requests()
             self.__update_rl(response)
 
-            if response.status_code != requests.codes.ok:
+            if response.status_code == requests.codes.ok:
+                json = response.json()
+                if "next" in response.links:
+                    json.extend(self.get(response.links['next']["url"]))
+                return json
+            elif response.status_code >= 400 and response.status_code < 500:
+                response.raise_for_status()
+            elif response.status_code >= 500:
                 if config.DEBUG:
                     print "Request failed. Retrying in %s seconds" % delay
                 time.sleep(delay)
