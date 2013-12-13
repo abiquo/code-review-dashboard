@@ -87,4 +87,6 @@ class Abiquo:
                 "https://api.github.com/repos/abiquo/cloud-provider-proxy",
                 "https://api.github.com/repos/abiquo/nfs-plugin",
                 "https://api.github.com/repos/abiquo/omapi-dhcp",
+                "https://api.github.com/repos/abiquo/bond",
+                "https://api.github.com/repos/abiquo/abiquo-api-outbound-java-client",
                 "https://api.github.com/repos/abiquo/platform"]
