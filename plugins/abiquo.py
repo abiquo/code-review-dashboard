@@ -89,4 +89,5 @@ class Abiquo:
                 "https://api.github.com/repos/abiquo/omapi-dhcp",
                 "https://api.github.com/repos/abiquo/jclouds-plugin",
                 "https://api.github.com/repos/abiquo/platform",
-                "https://api.github.com/repos/abiquo/kairosdb-java-client"]
+                "https://api.github.com/repos/abiquo/kairosdb-java-client",
+                "https://api.github.com/repos/abiquo/azure-plugin"]
