@@ -91,4 +91,5 @@ class Abiquo:
                 "https://api.github.com/repos/abiquo/platform",
                 "https://api.github.com/repos/abiquo/kairosdb-java-client",
                 "https://api.github.com/repos/abiquo/azure-plugin",
+                "https://api.github.com/repos/abiquo/api-java-client",
                 "https://api.github.com/repos/abiquo/tutorials"]
