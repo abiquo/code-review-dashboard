@@ -88,4 +88,6 @@ class Abiquo:
                 "https://api.github.com/repos/abiquo/abiquo-cookbook",
                 "https://api.github.com/repos/abiquo/ui-tests",
                 "https://api.github.com/repos/abiquo/docker-plugin",
+                "https://api.github.com/repos/abiquo/bond",
+                "https://api.github.com/repos/abiquo/abiquo-api-outbound-java-client",
                 "https://api.github.com/repos/abiquo/tutorials"]
