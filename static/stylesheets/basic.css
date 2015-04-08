@@ -33,8 +33,20 @@
     color: orange;
 }
 
-.participated {
+.build-unknown {
+    color: orange;
+}
+
+.build-success {
     color: green;
+}
+
+.build-failure {
+    color: red;
+}
+
+.participated {
+    color: #4863A0;
 }
 
 #filters {

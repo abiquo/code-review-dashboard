@@ -10,5 +10,8 @@
     {% if pull['following'] %}</span>{% endif %} /
     {% if pull['obsolete'] %}<span class="obsolete">{% endif %}
         {{ pull['old'] }} days old
-    {% if pull['obsolete'] %}</span>{% endif %}
+    {% if pull['obsolete'] %}</span>{% endif %}<br/>
+    {% if pull['build_status'] %}
+        Build status: <span class="build-{{ pull['build_status'] }}">{{ pull['build_status'] }}</span>
+    {% endif %}
 {%- endmacro %}

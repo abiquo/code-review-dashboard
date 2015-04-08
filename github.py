@@ -98,11 +98,16 @@ class Github:
         summary['author'] = pull["user"]["login"]
         summary['old'] = self.get_days_old(pull)
         summary['target_branch'] = pull["base"]["ref"]
+        summary['build_status'] = self._get_build_status(pull)
 
         self.plugin.parse_pull(pull, summary)
         self._analyze_comments(pull, summary)
 
         results.put(summary)
+
+    def _get_build_status(self, pull):
+        statuses = self.get(pull['statuses_url'])
+        return statuses[0]['state'] if statuses else None
 
     def _analyze_comments(self, pull, summary):
         following = False
