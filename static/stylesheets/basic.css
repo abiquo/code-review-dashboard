@@ -37,6 +37,10 @@
     color: orange;
 }
 
+.build-pending {
+    color: orange;
+}
+
 .build-success {
     color: green;
 }
