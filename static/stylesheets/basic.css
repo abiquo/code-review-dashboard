@@ -34,7 +34,7 @@
 }
 
 .build-unknown {
-    color: orange;
+    color: lightgray;
 }
 
 .build-pending {

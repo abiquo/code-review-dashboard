@@ -107,7 +107,7 @@ class Github:
 
     def _get_build_status(self, pull):
         statuses = self.get(pull['statuses_url'])
-        return statuses[0]['state'] if statuses else None
+        return statuses[0]['state'] if statuses else "unknown"
 
     def _analyze_comments(self, pull, summary):
         following = False
