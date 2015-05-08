@@ -90,4 +90,5 @@ class Abiquo:
                 "https://api.github.com/repos/abiquo/docker-plugin",
                 "https://api.github.com/repos/abiquo/bond",
                 "https://api.github.com/repos/abiquo/abiquo-api-outbound-java-client",
+                "https://api.github.com/repos/abiquo/abiquo-reports",
                 "https://api.github.com/repos/abiquo/tutorials"]
