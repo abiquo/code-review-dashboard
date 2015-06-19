@@ -91,4 +91,6 @@ class Abiquo:
                 "https://api.github.com/repos/abiquo/bond",
                 "https://api.github.com/repos/abiquo/abiquo-api-outbound-java-client",
                 "https://api.github.com/repos/abiquo/abiquo-reports",
+                "https://api.github.com/repos/abiquo/collectd-abiquo",
+                "https://api.github.com/repos/abiquo/collectd-abiquo-cookbook",
                 "https://api.github.com/repos/abiquo/tutorials"]
