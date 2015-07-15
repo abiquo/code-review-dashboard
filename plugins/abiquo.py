@@ -34,7 +34,7 @@ class Abiquo:
         return 'left'
 
     def _has_like(self, comment):
-        for pattern in ["\+1", ":shoe:\s*:soccer:"]:
+        for pattern in ["\+1", ":shoe:\s*:soccer:", ":shipit:"]:
             if re.search(pattern, comment["body"]):
                 return True
         return False
