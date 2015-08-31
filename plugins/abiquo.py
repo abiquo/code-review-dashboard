@@ -93,4 +93,5 @@ class Abiquo:
                 "https://api.github.com/repos/abiquo/abiquo-reports",
                 "https://api.github.com/repos/abiquo/collectd-abiquo",
                 "https://api.github.com/repos/abiquo/collectd-abiquo-cookbook",
+                "https://api.github.com/repos/abiquo/captain-koons",
                 "https://api.github.com/repos/abiquo/tutorials"]
