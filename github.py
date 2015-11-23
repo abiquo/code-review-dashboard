@@ -7,13 +7,13 @@ import time
 
 
 class Github:
-    def __init__(self, credentials, plugin):
+    def __init__(self, credentials, dashboard):
         self.credentials = credentials
         self.total_threads = 0
         self.total_requests = 0
         self.remaining_rl = None
-        self.plugin = plugin
-        self.plugin.github = self
+        self.dashboard = dashboard
+        self.dashboard.github = self
 
     def user(self):
         if not self.credentials.user:
@@ -37,7 +37,7 @@ class Github:
         threads = []
         results = Queue.Queue()
 
-        for repo_url in self.plugin.repos:
+        for repo_url in self.dashboard.repos:
             try:
                 repo = self.get(repo_url)
                 if config.THREADED:
@@ -100,7 +100,7 @@ class Github:
         summary['target_branch'] = pull["base"]["ref"]
         summary['build_status'] = self._get_build_status(pull)
 
-        self.plugin.parse_pull(pull, summary)
+        self.dashboard.parse_pull(pull, summary)
         self._analyze_comments(pull, summary)
 
         results.put(summary)
@@ -116,7 +116,7 @@ class Github:
         for comment in comments:
             if comment["user"]["login"] == self.user():
                 following = True
-            self.plugin.parse_comment(comment, summary)
+            self.dashboard.parse_comment(comment, summary)
 
         summary['comments'] = pull["comments"] + pull["review_comments"]
         summary['following'] = following
