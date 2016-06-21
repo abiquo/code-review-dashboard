@@ -23,7 +23,6 @@ class Abiquo:
     def parse_comment(self, comment, data):
         if self._is_canadian(comment):
             data['canadian'] = True
-            data['likes'] = data['likes'] + 1
         if self._has_like(comment):
             data['likes'] = data['likes'] + 1
         if self._has_dislike(comment):
