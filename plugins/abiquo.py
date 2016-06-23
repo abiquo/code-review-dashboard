@@ -45,7 +45,7 @@ class Abiquo:
 
     def _add_icon(self, comment, data):
         user = comment['user']['login']
-        if user in self.authors:
+        if user in self.authors and not data['icons'].contains(self.authors[user]):
             data['icons'].append(self.authors[user])
 
     def _has_like(self, comment):
