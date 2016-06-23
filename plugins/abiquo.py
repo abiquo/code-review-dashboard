@@ -25,6 +25,7 @@ class Abiquo:
         data['icons'] = []
 
     def parse_comment(self, comment, data):
+        self._add_icon(comment, data)
         if self._has_like(comment):
             data['likes'] = data['likes'] + 1
         if self._has_dislike(comment):
@@ -38,7 +39,7 @@ class Abiquo:
             return 'middle'
         return 'left'
 
-    def add_icon(self, comment, data):
+    def _add_icon(self, comment, data):
         user = comment['user']['login']
         if user in self.authors:
             data['icons'].append(self.authors[user])
