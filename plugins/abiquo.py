@@ -21,8 +21,8 @@ class Abiquo:
         data['canadian'] = False
 
     def parse_comment(self, comment, data):
-        if self._is_canadian(comment):
-            data['canadian'] = True
+        data['canadian'] = self._is_canadian(comment)
+        data['agorilado'] = self._is_agorilado(comment)
         if self._has_like(comment):
             data['likes'] = data['likes'] + 1
         if self._has_dislike(comment):
@@ -40,6 +40,9 @@ class Abiquo:
         if re.search("Leader Seal of Approval", comment["body"]):
             return True
         return False
+
+    def _is_agorilado(self, comment):
+        return comment['user']['login'] == 'apuig'
 
     def _has_like(self, comment):
         for pattern in ["\+1", ":shoe:\s*:soccer:", ":shipit:"]:
