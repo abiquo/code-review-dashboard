@@ -14,7 +14,7 @@ class Abiquo:
         }
         self.authors = {
             'danielestevez': {'icon': '&#128169;', 'color': '#7E3817', 'title': 'Lidl Commented'},
-            'apuig': {'icon': '&#128092;', 'color': '#7E3817', 'title': 'Agorilado Commented'},
+            'apuig': {'icon': '&#128092;', 'color': '#7E3817', 'title': 'Agorilado Commented'}
         }
         self.repos = self._abiquo_repos()
 
