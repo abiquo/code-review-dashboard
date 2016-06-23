@@ -2,7 +2,7 @@
     <strong>{{ pull['repo_name'] }}</strong>
     [{{ pull['target_branch'] }}] <a href="{{ pull['url'] }}">{{ pull['name'] }}</a> <em{% if pull['author'] == user %} class="me"{% endif %}>({{ pull['author'] }})</em><br/>
     {% for icon in pull['icons'] %}
-        <span title="{{ icon['title'] }}" style="color: {{ icon['color'] }}">{{ icon['icon'] }}</span>
+        <span title="{{ icon['title'] }}" style="color: {{ icon['color'] }}">{{ icon['icon'].decode('utf-8') }}</span>
     {% endfor %}
     {{ pull['likes'] }} likes /
     {% if pull['dislikes'] > 0 %}
