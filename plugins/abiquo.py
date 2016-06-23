@@ -13,9 +13,9 @@ class Abiquo:
             'template': 'abiquo.html',
         }
         self.authors = {
-            'danielestevez': {'icon': '&#128169;', 'color': '#7E3817', 'title': 'Lidl Commented'},
-            'apuig': {'icon': '&#128092;', 'color': '#7E3817', 'title': 'Agorilado Commented'},
-            'enricruiz': {'icon': '&#128110;', 'color': '#133B78', 'title': 'Thief Commented'}
+            'danielestevez': {'unicode': '128169', 'color': '#7E3817', 'title': 'Lidl Commented'},
+            'apuig': {'unicode': '128092', 'color': '#7E3817', 'title': 'Agorilado Commented'},
+            'enricruiz': {'unicode': '128110', 'color': '#133B78', 'title': 'Thief Commented'}
         }
         self.repos = self._abiquo_repos()
 
