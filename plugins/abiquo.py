@@ -12,17 +12,19 @@ class Abiquo:
             'headers': {'left': 'Cold', 'middle': 'Hot!', 'right': 'Burning'},
             'template': 'abiquo.html',
         }
+        self.authors = {
+            'danielestevez': {'icon': '&#128169;', 'color': '#7E3817', 'title': 'Lidl Commented'},
+            'apuig': {'icon': '&#128092;', 'color': '#7E3817', 'title': 'Agorilado Commented'},
+        }
         self.repos = self._abiquo_repos()
 
     def parse_pull(self, pull, data):
         data['obsolete'] = data['old'] >= 2
         data['likes'] = 0
         data['dislikes'] = 0
-        data['canadian'] = False
+        data['icons'] = []
 
     def parse_comment(self, comment, data):
-        data['canadian'] = self._is_canadian(comment)
-        data['agorilado'] = self._is_agorilado(comment)
         if self._has_like(comment):
             data['likes'] = data['likes'] + 1
         if self._has_dislike(comment):
@@ -36,13 +38,10 @@ class Abiquo:
             return 'middle'
         return 'left'
 
-    def _is_canadian(self, comment):
-        if re.search("Leader Seal of Approval", comment["body"]):
-            return True
-        return False
-
-    def _is_agorilado(self, comment):
-        return comment['user']['login'] == 'apuig'
+    def add_icon(self, comment, data):
+        user = comment['user']['login']
+        if user in self.authors:
+            data['icons'].append(self.authors[user])
 
     def _has_like(self, comment):
         for pattern in ["\+1", ":shoe:\s*:soccer:", ":shipit:"]:
