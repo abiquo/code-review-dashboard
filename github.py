@@ -112,7 +112,7 @@ class Github:
     def _analyze_comments(self, pull, summary):
         following = False
         comments = self.get(pull["comments_url"])
-        comments.append(self.get(pull["review_comments_url"]))
+        comments.extend(self.get(pull["review_comments_url"]))
 
         for comment in comments:
             if comment["user"]["login"] == self.user():
