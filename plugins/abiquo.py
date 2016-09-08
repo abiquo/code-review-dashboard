@@ -22,10 +22,10 @@ class Abiquo:
         }
         self.repos = self._abiquo_repos()
 
-    def parse_pull(self, pull, data):
+    def parse_pull(self, pull, reactions, data):
         data['obsolete'] = data['old'] >= 2
-        data['likes'] = 0
-        data['dislikes'] = 0
+        data['likes'] = sum(1 for r in reactions if r == '+1')
+        data['dislikes'] = sum(1 for r in reactions if r == '-1')
         data['icons'] = []
 
     def parse_comment(self, comment, data):

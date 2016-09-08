@@ -4,6 +4,7 @@ import Queue
 import requests
 import threading
 import time
+import traceback
 
 
 class Github:
@@ -53,6 +54,7 @@ class Github:
             except:
                 if config.DEBUG:
                     print "Could not analyze repository: %s" % repo_url
+                    traceback.print_exc()
 
         pulls = []
         while not results.empty():
@@ -100,7 +102,8 @@ class Github:
         summary['target_branch'] = pull["base"]["ref"]
         summary['build_status'] = self._get_build_status(pull)
 
-        self.plugin.parse_pull(pull, summary)
+        reactions = self.get_reactions(pull)
+        self.plugin.parse_pull(pull, reactions, summary)
         self._analyze_comments(pull, summary)
 
         results.put(summary)
@@ -128,8 +131,14 @@ class Github:
         today = datetime.datetime.today()
         return (today - dt).days
 
+    def get_reactions(self, pull):
+        reactions = self.get(pull['issue_url'] + '/reactions',
+                accept='application/vnd.github.squirrel-girl-preview')
+        return map(lambda r: r['content'], reactions)
+
     def get(self, url, params=None, delay=config.DELAY,
-            retries=config.MAX_RETRIES, backoff=config.BACKOFF):
+            retries=config.MAX_RETRIES, backoff=config.BACKOFF,
+            accept='application/json'):
         if config.DEBUG:
             print "GET %s" % url
 
@@ -139,8 +148,7 @@ class Github:
             params['access_token'] = self.credentials.token
 
         while retries > 1:
-            response = requests.get(url,
-                                    params=params)
+            response = requests.get(url, params=params, headers={'Accept': accept})
             self.__incr_requests()
             self.__update_rl(response)
 
