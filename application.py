@@ -127,7 +127,7 @@ def __request_token(code):
     uri = 'https://github.com/login/oauth/access_token?client_id=' +\
         client_id + '&client_secret=' + client_secret + '&code=' + code
 
-    header = {'Content-type:': 'application/json'}
+    header = {'Content-type': 'application/json'}
     r = requests.post(uri,
                       headers=header)
     d = dict(s.split('=') for s in r.content.split('&'))
