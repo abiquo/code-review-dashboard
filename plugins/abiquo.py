@@ -106,4 +106,5 @@ class Abiquo:
                 "https://api.github.com/repos/abiquo/watchtower",
                 "https://api.github.com/repos/abiquo/jimmy",
                 "https://api.github.com/repos/abiquo/nsx-plugin",
+                "https://api.github.com/repos/abiquo/vcd-plugin",
                 "https://api.github.com/repos/abiquo/tutorials"]
