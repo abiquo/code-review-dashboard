@@ -22,18 +22,14 @@ class Abiquo:
         }
         self.repos = self._abiquo_repos()
 
-    def parse_pull(self, pull, reactions, data):
+    def parse_pull(self, pull, data):
         data['obsolete'] = data['old'] >= 2
-        data['likes'] = sum(1 for r in reactions if r == '+1')
-        data['dislikes'] = sum(1 for r in reactions if r == '-1')
         data['icons'] = []
 
     def parse_comment(self, comment, data):
-        self._add_icon(comment, data)
-        if self._has_like(comment):
-            data['likes'] = data['likes'] + 1
-        if self._has_dislike(comment):
-            data['dislikes'] = data['dislikes'] + 1
+        user = comment['user']['login']
+        if user in self.authors and not self.authors[user] in data['icons']:
+            data['icons'].append(self.authors[user])
 
     def classify(self, pull):
         likes = pull['likes']
@@ -42,22 +38,6 @@ class Abiquo:
         elif likes > 0:
             return 'middle'
         return 'left'
-
-    def _add_icon(self, comment, data):
-        user = comment['user']['login']
-        if user in self.authors and not self.authors[user] in data['icons']:
-            data['icons'].append(self.authors[user])
-
-    def _has_like(self, comment):
-        for pattern in ["\+1", ":shoe:\s*:soccer:", ":shipit:"]:
-            if re.search(pattern, comment["body"]):
-                return True
-        return False
-
-    def _has_dislike(self, comment):
-        if re.search("\-1", comment["body"]):
-            return True
-        return False
 
     def _abiquo_repos(self):
         return ["https://api.github.com/repos/abiquo/aim",

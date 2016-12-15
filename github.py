@@ -6,6 +6,7 @@ import threading
 import time
 import traceback
 
+from collections import defaultdict
 
 class Github:
     def __init__(self, credentials, plugin):
@@ -101,9 +102,11 @@ class Github:
         summary['old'] = self.get_days_old(pull)
         summary['target_branch'] = pull["base"]["ref"]
         summary['build_status'] = self._get_build_status(pull)
+        summary['likes'] = 0
+        summary['dislikes'] = 0
 
-        reactions = self.get_reactions(pull)
-        self.plugin.parse_pull(pull, reactions, summary)
+        self.plugin.parse_pull(pull, summary)
+        self._analyze_reviews(pull, summary)
         self._analyze_comments(pull, summary)
 
         results.put(summary)
@@ -125,16 +128,29 @@ class Github:
         summary['comments'] = pull["comments"] + pull["review_comments"]
         summary['following'] = following
 
+    def _analyze_reviews(self, pull, summary):
+        reviews = self.get_reviews(pull)
+        # Index by author, taking only into account approvals or rejections
+        review_map = defaultdict(list)
+        for r in filter(lambda r: r['state'] != 'COMMENTED', reviews):
+            review_map[r['user']['login']].append(r)
+        for author, author_reviews in review_map.iteritems():
+            # Get the last review for each author
+            review = max(author_reviews, key=lambda r: r['id'])
+            if review['state'] == 'APPROVED':
+                summary['likes'] = summary['likes'] + 1
+            elif review['state'] == 'CHANGES_REQUESTED':
+                summary['dislikes'] = summary['dislikes'] + 1
+
     def get_days_old(self, pull):
         last_updated = pull['updated_at']
         dt = datetime.datetime.strptime(last_updated, '%Y-%m-%dT%H:%M:%SZ')
         today = datetime.datetime.today()
         return (today - dt).days
 
-    def get_reactions(self, pull):
-        reactions = self.get(pull['issue_url'] + '/reactions',
-                accept='application/vnd.github.squirrel-girl-preview')
-        return map(lambda r: r['content'], reactions)
+    def get_reviews(self, pull):
+        return self.get(pull['url'] + '/reviews',
+                accept='application/vnd.github.black-cat-preview+json')
 
     def get(self, url, params=None, delay=config.DELAY,
             retries=config.MAX_RETRIES, backoff=config.BACKOFF,
