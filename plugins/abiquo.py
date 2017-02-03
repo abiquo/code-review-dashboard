@@ -18,7 +18,8 @@ class Abiquo:
             'enricruiz': {'unicode': '128110', 'color': '#133B78', 'title': 'Thief Commented'},
             'sergicastro': {'unicode': '9891', 'color': '#C45AEC', 'title': 'Sergi Commented with Love'},
             'luciaems': {'unicode': '127814', 'color': '#571B7E', 'title': 'Lucia Commented'},
-            'nacx': {'unicode': '128158', 'color': '#FF00DD', 'title': 'Gayer Commented'}
+            'nacx': {'unicode': '128158', 'color': '#FF00DD', 'title': 'Gayer Commented'},
+            'aprete': {'unicode': '127829', 'color': '#CC6600', 'title': 'Rumana Commented'}
         }
         self.repos = self._abiquo_repos()
 
