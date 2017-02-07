@@ -88,4 +88,6 @@ class Abiquo:
                 "https://api.github.com/repos/abiquo/jimmy",
                 "https://api.github.com/repos/abiquo/nsx-plugin",
                 "https://api.github.com/repos/abiquo/vcd-plugin",
+                "https://api.github.com/repos/abiquo/avamar-plugin",
+                "https://api.github.com/repos/abiquo/veeam-plugin",
                 "https://api.github.com/repos/abiquo/tutorials"]
