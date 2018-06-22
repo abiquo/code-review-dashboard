@@ -93,4 +93,5 @@ class Abiquo:
                 "https://api.github.com/repos/abiquo/maven-archetypes",
                 "https://api.github.com/repos/abiquo/commons-dhcp",
                 "https://api.github.com/repos/abiquo/oracle-ase",
+                "https://api.github.com/repos/abiquo/dnsmasq",
                 "https://api.github.com/repos/abiquo/tutorials"]
