@@ -16,6 +16,17 @@ class Github:
         self.remaining_rl = None
         self.plugin = plugin
         self.plugin.github = self
+        self.check_unicodes = {
+            'queued': '9685',
+            'in_progress': '9685',
+            'action_required': '65794',
+            'canceled': '65794',
+            'timed_out': '65794',
+            'failed': '65794',
+            'neutral': '9685',
+            'success': '10003',
+            'failure': '65794'
+        }
 
     def user(self):
         if not self.credentials.user:
@@ -114,12 +125,36 @@ class Github:
         summary['build_status'] = self._get_build_status(pull)
         summary['likes'] = 0
         summary['dislikes'] = 0
+        summary['checks'] = self._get_check_status(pull, repo)
 
         self.plugin.parse_pull(pull, summary)
         self._analyze_reviews(pull, summary)
         self._analyze_comments(pull, summary)
 
         results.put(summary)
+
+
+    def _get_check_status(self, pull, repo):
+        commits = self.get(pull["commits_url"])
+        last = commits[len(commits)-1]
+        check_suites = self.get('https://api.github.com/repos/%s/%s/commits/%s/check-runs'
+                                % ('abiquo', repo["name"], last["sha"]),
+                                accept='application/vnd.github.antiope-preview+json')['check_runs']
+
+        checks = {}
+        for cs in check_suites:
+            conclusion = cs["conclusion"] if cs["status"] == "completed" else cs["status"]
+            if conclusion in checks:
+                check = checks[conclusion]
+                check['num'] = check['num'] + 1
+            else:
+                check = {}
+                check['num'] = 1
+                check['unicode'] = self.check_unicodes[conclusion]
+            checks[conclusion] = check
+
+        return checks
+
 
     def _get_build_status(self, pull):
         statuses = self.get(pull['statuses_url'])

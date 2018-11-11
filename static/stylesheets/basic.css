@@ -49,6 +49,38 @@
     color: red;
 }
 
+.check-queued {
+    color: orange
+}
+
+.check-in_progress {
+    color: orange
+}
+
+.check-action_required {
+    color: red
+}
+
+.check-canceled {
+    color: red
+}
+
+.check-timed_out {
+    color: red
+}
+
+.check-failed {
+    color: red
+}
+
+.check-failure {
+    color: red
+}
+
+.check-success {
+    color: green
+}
+
 .participated {
     color: #4863A0;
 }
