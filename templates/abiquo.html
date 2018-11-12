@@ -17,9 +17,9 @@
     {% if pull['checks'] %}
     Check status:
     {% for checkstatus, check in pull['checks'].iteritems() %}
-    <span title="{{ checkstatus }}" class="check-{{ checkstatus  }}"><b>&#{{ check['unicode'] }};: {{ check['num'] }}</b></span>
+    <span title="{{ checkstatus }}" class="check check-{{ checkstatus  }}">&#{{ check['unicode'] }};: {{ check['num'] }}</span>
     {% endfor %}
-    <br/>
+    <!-- <br/> -->
     {% endif %}
-    Build status: <span class="build-{{ pull['build_status'] }}">{{ pull['build_status'] }}</span>
+    <!-- Build status: <span class="build-{{ pull['build_status'] }}">{{ pull['build_status'] }}</span> -->
 {%- endmacro %}

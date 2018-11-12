@@ -49,36 +49,42 @@
     color: red;
 }
 
+.check {
+    color: white;
+    border-radius: 12px;
+    padding: 1px 4px;
+    font-weight: bolder;
+}
 .check-queued {
-    color: orange
+    background: orange
 }
 
 .check-in_progress {
-    color: orange
+    background: orange
 }
 
 .check-action_required {
-    color: red
+    background: red
 }
 
 .check-canceled {
-    color: red
+    background: red
 }
 
 .check-timed_out {
-    color: red
+    background: red
 }
 
 .check-failed {
-    color: red
+    background: red
 }
 
 .check-failure {
-    color: red
+    background: red
 }
 
 .check-success {
-    color: green
+    background: green
 }
 
 .participated {
@@ -110,4 +116,23 @@
 #octocat {
     width: 266px;
     height: 221px;
+}
+
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    padding: 3px 16px;
+    border-radius: 7px;
+    margin: 20px 0px;
+    background: #fff;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
 }

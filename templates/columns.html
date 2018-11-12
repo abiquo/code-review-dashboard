@@ -10,19 +10,19 @@
     <div class="one-third column">
         <h3>{{ headers['left'] }} <span class="count">({{ stats['total-left'] }})</span></h3>
         {% for pull in pulls['left'] %}
-            <p class="pull {{ pull['target_branch'] }} {{ pull['author'] }} {{ pull['repo_name'] }}">{{ renderer.render(pull, user) }}</p>
+        <div class="pull {{ pull['target_branch'] }} {{ pull['author'] }} {{ pull['repo_name'] }} card">{{ renderer.render(pull, user) }}</div>
         {% endfor %}
     </div>
     <div class="one-third column">
         <h3>{{ headers['middle'] }} <span class="count">({{ stats['total-middle'] }})</span></h3>
         {% for pull in pulls['middle'] %}
-            <p class="pull {{ pull['target_branch'] }} {{ pull['author'] }} {{ pull['repo_name'] }}">{{ renderer.render(pull, user) }}</p>
+        <div class="pull {{ pull['target_branch'] }} {{ pull['author'] }} {{ pull['repo_name'] }} card">{{ renderer.render(pull, user) }}</div>
         {% endfor %}
     </div>
     <div class="one-third column">
         <h3>{{ headers['right'] }} <span class="count">({{ stats['total-right'] }})</span></h3>
         {% for pull in pulls['right'] %}
-            <p class="pull {{ pull['target_branch'] }} {{ pull['author'] }} {{ pull['repo_name'] }}">{{ renderer.render(pull, user) }}</p>
+        <div class="pull {{ pull['target_branch'] }} {{ pull['author'] }} {{ pull['repo_name'] }} card">{{ renderer.render(pull, user) }}</div>
         {% endfor %}
     </div>
 {% endblock %}
