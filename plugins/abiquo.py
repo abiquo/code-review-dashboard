@@ -96,4 +96,5 @@ class Abiquo:
                 "https://api.github.com/repos/abiquo/dnsmasq",
                 "https://api.github.com/repos/abiquo/functional-tests",
                 "https://api.github.com/repos/abiquo/buchannon",
-                "https://api.github.com/repos/abiquo/tutorials"]
+                "https://api.github.com/repos/abiquo/tutorials",
+                "https://api.github.com/repos/abiquo/networker-plugin"]
