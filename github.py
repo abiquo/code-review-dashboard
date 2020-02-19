@@ -203,13 +203,9 @@ class Github:
         if config.DEBUG:
             print "GET %s" % url
 
-        if not params:
-            params = {'access_token': self.credentials.token}
-        else:
-            params['access_token'] = self.credentials.token
-
+        headers={'Accept': accept, 'Authorization': 'token ' + self.credentials.token}
         while retries > 1:
-            response = requests.get(url, params=params, headers={'Accept': accept})
+            response = requests.get(url, params=params, headers=headers)
             self.__incr_requests()
             self.__update_rl(response)
 
