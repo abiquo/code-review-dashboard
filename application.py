@@ -7,6 +7,7 @@ import timeit
 import os
 import requests
 import string
+import subprocess
 import random
 
 
@@ -66,7 +67,8 @@ def index(auth=None):
         'process-time': end - start,
         'total-left': len(summaries['left']),
         'total-middle': len(summaries['middle']),
-        'total-right': len(summaries['right'])
+        'total-right': len(summaries['right']),
+        'git-commit': git_commit
     }
 
     return render_template('columns.html',
@@ -138,6 +140,14 @@ def __request_token(code):
         return Token(d['access_token'])
 
     return Token('')
+
+
+def __gitcommit():
+    cmd = ["git", "log", "-1", "--pretty=format:%h"]
+    return subprocess.check_output(cmd).strip()
+
+
+git_commit = __gitcommit()
 
 
 if __name__ == "__main__":
